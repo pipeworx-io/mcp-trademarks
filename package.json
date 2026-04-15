@@ -1,0 +1,20 @@
+{
+  "name": "@pipeworx/mcp-trademarks",
+  "version": "0.1.0",
+  "description": "Trademarks MCP — USPTO TSDR trademark lookup",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "trademarks"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pipeworx-io/mcp-trademarks"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

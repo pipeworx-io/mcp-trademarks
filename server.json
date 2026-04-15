@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.pipeworx-io/trademarks",
+  "title": "trademarks",
+  "description": "Trademarks MCP — USPTO TSDR trademark lookup",
+  "version": "0.1.0",
+  "websiteUrl": "https://pipeworx.io/packs/trademarks",
+  "repository": {
+    "url": "https://github.com/pipeworx-io/mcp-trademarks",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gateway.pipeworx.io/trademarks/mcp"
+    }
+  ]
+}
