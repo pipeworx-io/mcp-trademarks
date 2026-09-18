@@ -80,3 +80,13 @@ The gateway picks the right tool and fills the arguments automatically.
 ## License
 
 MIT
+
+## No MCP client? Call it over HTTP
+
+```bash
+curl -X POST https://gateway.pipeworx.io/v1/tools/search_trademarks \
+  -H 'Content-Type: application/json' \
+  -d '{"query":"TenderBrief","live_only":true,"international_class":"35"}'
+```
+
+No account needed for the first calls. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/search_trademarks`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
