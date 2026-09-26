@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-trademarks",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Trademarks MCP — US trademark search + record lookup",
   "type": "module",
   "main": "src/index.ts",
@@ -26,7 +26,7 @@
     "@cloudflare/workers-types": "^4.20260405.1"
   },
   "pipeworx": {
-    "sourceHash": "v1-fbc25627d20486024a4ad3177850ead382d644c8ff6250a8d70fb167893a8225",
-    "sourceCommit": "b0fb3c31386cf0256dcf1e2f1b3440435a87ec35"
+    "sourceHash": "v1-a0dcba7195430c8a1f8e168dd9141176267e316f2ee8f0b1f087484850cd0d30",
+    "sourceCommit": "66a0692f029179984440cef6938cba7fdd41d66d"
   }
 }
