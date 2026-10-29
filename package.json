@@ -1,12 +1,20 @@
 {
   "name": "@pipeworx/mcp-trademarks",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Trademarks MCP — US trademark search + record lookup",
   "type": "module",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./tools.json": "./tools.json",
+    "./package.json": "./package.json"
+  },
   "bin": {
     "mcp-trademarks": "bin/cli.js"
+  },
+  "files": ["bin/", "lib/", "tools.json", "server.json"],
+  "engines": {
+    "node": ">=18"
   },
   "keywords": ["mcp", "mcp-server", "model-context-protocol", "pipeworx", "trademarks"],
   "license": "MIT",
@@ -14,19 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/pipeworx-io/mcp-trademarks.git"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.30.0",
-    "tsx": "^4.19.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3",
-    "@cloudflare/workers-types": "^4.20260405.1"
-  },
+  "mcpName": "io.github.pipeworx-io/trademarks",
   "pipeworx": {
-    "sourceHash": "v1-a0dcba7195430c8a1f8e168dd9141176267e316f2ee8f0b1f087484850cd0d30",
-    "sourceCommit": "66a0692f029179984440cef6938cba7fdd41d66d"
+    "mode": "gateway",
+    "slug": "trademarks",
+    "gatewaySlug": "trademarks",
+    "sourceHash": "v1-6bf1083a0d91aafe670b770072f099168ae4502038bfd9c2b7f1d3cff44ef7fc",
+    "sourceCommit": "f47d581679e1e887373df51ba623f891fbe4c464"
   }
 }

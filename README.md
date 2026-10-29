@@ -1,17 +1,58 @@
-# mcp-trademarks
+# @pipeworx/trademarks
 
-Trademarks MCP — US trademark search + record lookup
+US federal trademarks: find marks by text or owner, look one up by serial or
+registration number, and read its status, owners of record, attorney of record,
+classes and goods/services. Keyless.
 
-Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1684+ live data sources.
+Part of [Pipeworx](https://pipeworx.io) — an MCP gateway connecting AI agents to 1857+ live data sources. This is an independent, unofficial integration — not affiliated with, endorsed by, or published by the upstream provider.
 
 ## Tools
 
-| Tool | Description |
-|------|-------------|
-| `search_trademarks` | Search US federal trademarks by mark text — the clearance/knockout-search path. Find registered and pending marks by wordmark without knowing a serial or registration number, then filter by international class and live/dead status to see which marks are actually enforceable. Covers the full USPTO register (the tmsearch.uspto.gov Elasticsearch backend that replaced TESS). Keyless. Use this to check whether a proposed brand name conflicts with existing US trademarks. Returns wordmark, serial and registration numbers, status, live flag, international classes, goods/services, owner, and filing dates. For a name-availability check, set live_only:true and pass the relevant class (e.g. 35 for advertising/business, 42 for software/SaaS, 9 for downloadable software). |
-| `get_trademark_by_serial` | Look up a US trademark by serial number. Returns status, owner, filing/registration dates, goods/services, and classification. Requires USPTO API key (free at account.uspto.gov). |
-| `get_trademark_by_registration` | Look up a US trademark by registration number. Returns status, owner, mark text, goods/services, and classification. Requires USPTO API key. |
-| `get_trademark_documents` | Get the prosecution history (office actions, responses, etc.) for a trademark by serial number. Requires USPTO API key. |
+- `search_trademarks(query?, owner?, international_class?, live_only?, limit?, offset?)`
+  -- knockout / clearance search by mark text, or an owner's portfolio when
+  only `owner` is given (e.g. `{"owner":"Nike","live_only":true}`). A
+  zero-hit search says what it did NOT search instead of reading as "this
+  name is free".
+- `get_trademark_by_serial(serial_number, api_key?)` -- one mark by its
+  8-digit serial number (e.g. `79153306`).
+- `get_trademark_by_registration(registration_number, api_key?)` -- one mark
+  by its registration number (e.g. `4872338`).
+- `get_trademark_documents(serial_number, api_key)` -- the prosecution
+  document list (office actions, responses). Needs a TSDR key.
+
+Number lookups answer `{found:true, source, data_as_of, record}` or
+`{found:false, reason, hint}` (`not_in_register`, `invalid_number`,
+`upstream_unavailable`) -- never an empty object.
+
+## Auth
+
+Keyless for search and both number lookups. A caller who holds a free USPTO
+TSDR key (account.uspto.gov/api-manager) can pass `api_key` to get TSDR's own
+case-status record from the number lookups instead; `get_trademark_documents`
+requires one.
+
+## Data sources
+
+- **USPTO, US federal trademark register (Trademark Search).** The register
+  index behind USPTO's Trademark Search system (the TESS replacement): about
+  13.3 million application and registration records, 4.6 million of them live
+  (measured 2026-10-28), refreshed by USPTO daily -- the newest record load
+  seen on 2026-10-28 was 2026-10-27, carrying filings from 2026-10-26.
+  `data_as_of` is USPTO's own per-record load timestamp.
+- **USPTO, Trademark Status and Document Retrieval (TSDR)** -- only when a
+  caller supplies a key.
+
+US federal data, public domain.
+
+## Personal data
+
+US trademark owners include natural persons, and the register carries every
+owner's full postal address. This pack serves owner **names**, role, legal
+entity type, citizenship and the attorney of record, as the register shows
+them. It never serves a street address for anyone. City / state / country is
+served for organisations only; an individual, sole proprietor, joint owner or
+an owner whose entity type is blank gets `location: null`. The filter lives in
+`src/owners.ts` and is pinned by `src/index.test.ts`.
 
 ## Quick Start
 
@@ -57,7 +98,7 @@ directly, instead of just this one's:
 }
 ```
 
-Both URLs reach the same gateway and the same 1684+ data sources. The
+Both URLs reach the same gateway and the same 1857+ data sources. The
 only difference is which pack's tools are listed **directly**; `ask_pipeworx`
 reaches all of them from either one.
 
@@ -71,10 +112,12 @@ curl -X POST https://gateway.pipeworx.io/v1/tools/search_trademarks \
 
 No account needed for the first calls. Inspect any tool: `GET https://gateway.pipeworx.io/v1/tools/search_trademarks`. Find one: `POST https://gateway.pipeworx.io/v1/tools/search_packs` with `{"query":"..."}`.
 
-## Standalone (no gateway account)
+## Run it from npm
 
-This package also runs as a local stdio MCP server — no Pipeworx account, no
-gateway round-trip:
+`@pipeworx/mcp-trademarks` is a local stdio bridge to the Pipeworx gateway: your MCP client
+starts it with `npx`, and it forwards every call to the same
+`https://gateway.pipeworx.io/trademarks/mcp` endpoint shown above. It needs network access;
+there is no offline mode.
 
 ```json
 {
@@ -87,15 +130,18 @@ gateway round-trip:
 }
 ```
 
-Or run it directly to confirm it starts:
+Without a key it calls anonymously, capped at 50 calls a day. A free account
+raises that to 200 a day: get a key at https://pipeworx.io/signup and add
+`"env": { "PIPEWORX_API_KEY": "<your key>" }` to the server entry.
+The key is sent as a Bearer token, the same way a hosted connection sends it,
+so calls are metered and billed exactly as they are there.
 
-```bash
-npx -y @pipeworx/mcp-trademarks
-```
+It lists **only** this pack's tools by default. Set `PIPEWORX_META_TOOLS=1` to
+also list `ask_pipeworx` and the other gateway-wide tools.
 
-It speaks MCP over stdin/stdout and answers `initialize`/`tools/list`/`tools/call`
-for **only** this pack's tools — none of the shared meta-tools the gateway
-connection above adds. Same source, same tools, no ask_pipeworx routing.
+Behind an HTTPS proxy: Node's built-in `fetch` does not read `HTTPS_PROXY` by
+default. Newer Node releases honour it when `NODE_USE_ENV_PROXY=1` is set; check
+your Node version's documentation.
 
 ## Using with ask_pipeworx
 
