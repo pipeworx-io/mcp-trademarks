@@ -1,6 +1,6 @@
 {
   "name": "@pipeworx/mcp-trademarks",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Trademarks MCP — US trademark search + record lookup",
   "type": "module",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
     "mode": "gateway",
     "slug": "trademarks",
     "gatewaySlug": "trademarks",
-    "sourceHash": "v1-6bf1083a0d91aafe670b770072f099168ae4502038bfd9c2b7f1d3cff44ef7fc",
-    "sourceCommit": "f47d581679e1e887373df51ba623f891fbe4c464"
+    "sourceHash": "v1-3d3ddd7fa07702c8a092185e75227c4485f58b562b18a1b3f961ecd6568802d4",
+    "sourceCommit": "868e119d526d5409447b7ee2149afba7eb9d2593"
   }
 }
